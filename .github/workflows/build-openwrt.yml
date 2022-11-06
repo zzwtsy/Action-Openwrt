@@ -169,9 +169,8 @@ jobs:
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
-        cd openwrt
         touch release.txt
-        git show -s --date=short --format="提交人: %an<br/>提交时间: %cd<br/>提交内容: %s<br/>commit hash: %H" >> release.txt
+        echo $(cd openwrt && git show -s --date=short --format="提交人: %an<br/>提交时间: %cd<br/>提交内容: %s<br/>commit hash: %H") >> release.txt
         [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
         [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
         echo "::set-output name=status::success"
